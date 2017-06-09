@@ -5,8 +5,7 @@ const preload = (content, resourcePath) => {
 
   // The providers listed below are automatically provided by their
   // respective plugin.
-  return content.replace('declare var StacheExtrasModule: any;',
-`
+  return `
 import { NgModule } from '@angular/core';
 
 import { SkyAppConfig } from '@blackbaud/skyux-builder/runtime';
@@ -28,7 +27,7 @@ import { StacheModule, StacheConfigService } from '@blackbaud/stache';
     }
   ]
 })
-export class StacheExtrasModule { }`);
+export class StacheExtrasModule { }`;
 };
 
 module.exports = { preload };
