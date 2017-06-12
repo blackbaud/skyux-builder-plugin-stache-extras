@@ -3,18 +3,29 @@ const preload = (content, resourcePath) => {
     return content;
   }
 
-  // The providers listed below are automatically provided by their
-  // respective plugin.
+  let moduleDirectory = '@blackbaud/stache';
+  if (resourcePath.match('/stache2/')) {
+    moduleDirectory = './public';
+  }
+
   return `
 import { NgModule } from '@angular/core';
 
+import { SkyAppConfig } from '@blackbaud/skyux-builder/runtime';
+
+import { StacheConfigService } from '${moduleDirectory}';
+
+export let STACHE_EXTRAS_PROVIDERS: any[] = [
+  { provide: StacheConfigService, useExisting: SkyAppConfig }
+];
+
 @NgModule({
   providers: [
-    STACHE_JSON_DATA_PROVIDERS,
-    STACHE_ROUTE_METADATA_PROVIDERS
+    STACHE_EXTRAS_PROVIDERS
   ]
 })
-export class StacheExtrasModule { }`;
+export class StacheExtrasModule { }
+`;
 };
 
 module.exports = { preload };
