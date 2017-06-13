@@ -1,5 +1,5 @@
-const preload = (content, resourcePath) => {
-  if (!resourcePath.match(/stache-extras\.module\.ts$/)) {
+const preload = (content, resourcePath, skyAppConfig) => {
+  if (!resourcePath.match(/app-extras\.module\.ts$/)) {
     return content;
   }
 
@@ -8,24 +8,20 @@ const preload = (content, resourcePath) => {
     moduleDirectory = './public';
   }
 
-  return `
-import { NgModule } from '@angular/core';
-
+  content = `
 import { SkyAppConfig } from '@blackbaud/skyux-builder/runtime';
-
 import { StacheConfigService } from '${moduleDirectory}';
 
-export let STACHE_EXTRAS_PROVIDERS: any[] = [
-  { provide: StacheConfigService, useExisting: SkyAppConfig }
-];
+export const STACHE_CONFIG_PROVIDERS: any[] = [{
+  provide: StacheConfigService,
+  useExisting: SkyAppConfig
+}];
+${content}`;
 
-@NgModule({
-  providers: [
-    STACHE_EXTRAS_PROVIDERS
-  ]
-})
-export class StacheExtrasModule { }
-`;
+  content = content.replace('providers: [', `providers: [
+    STACHE_CONFIG_PROVIDERS,`);
+
+  return content;
 };
 
 module.exports = { preload };
