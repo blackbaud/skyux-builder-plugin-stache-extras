@@ -1,4 +1,4 @@
-const preload = (content, resourcePath, skyAppConfig) => {
+const preload = (content, resourcePath) => {
   if (!resourcePath.match(/app-extras\.module\.ts$/)) {
     return content;
   }
